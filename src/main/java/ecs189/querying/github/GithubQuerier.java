@@ -25,6 +25,14 @@ public class GithubQuerier {
         sb.append("<div>");
         for (int i = 0; i < response.size(); i++) {
             JSONObject event = response.get(i);
+            JSONObject payload = event.getJSONObject("payload");
+            JSONArray root = payload.getJSONArray("commits");
+            JSONObject commit = root.getJSONObject(0);
+
+            // Get SHA hash
+            String SHA = commit.getString("sha");
+            // Get commit message
+            String message = commit.getString("message");
             // Get event type
             String type = event.getString("type");
             // Get created_at date, and format it in a more pleasant style
@@ -39,11 +47,18 @@ public class GithubQuerier {
             sb.append(type);
             sb.append("</h3>");
             // Add formatted date
-            sb.append(" on ");
             sb.append(formatted);
             sb.append("<br />");
+            // Add SHA
+            sb.append("<b> SHA hash: </b>");
+            sb.append(SHA.substring(0,8));
+            sb.append("<br />");
+            // Add commit message
+            sb.append("<b> Commit message:</b> ");
+            sb.append(message);
+            sb.append("<br />");
             // Add collapsible JSON textbox (don't worry about this for the homework; it's just a nice CSS thing I like)
-            sb.append("<a data-toggle=\"collapse\" href=\"#event-" + i + "\">JSON</a>");
+            sb.append("<b> <a data-toggle=\"collapse\" href=\"#event-" + i + "\">JSON</a> </b>");
             sb.append("<div id=event-" + i + " class=\"collapse\" style=\"height: auto;\"> <pre>");
             sb.append(event.toString());
             sb.append("</pre> </div>");
@@ -54,13 +69,18 @@ public class GithubQuerier {
 
     private static List<JSONObject> getEvents(String user) throws IOException {
         List<JSONObject> eventList = new ArrayList<JSONObject>();
-        String url = BASE_URL + user + "/events";
+        String access_token = "";
+        String url = BASE_URL + user + "/events" + access_token;
         System.out.println(url);
         JSONObject json = Util.queryAPI(new URL(url));
-        System.out.println(json);
+        //System.out.println(json);
         JSONArray events = json.getJSONArray("root");
-        for (int i = 0; i < events.length() && i < 10; i++) {
-            eventList.add(events.getJSONObject(i));
+        for (int i = 0; i < events.length() && eventList.size() < 10; i++) {
+            JSONObject event = events.getJSONObject(i);
+            String type = event.getString("type");
+            if(type.equals("PushEvent")){
+                eventList.add(events.getJSONObject(i));
+            }
         }
         return eventList;
     }
