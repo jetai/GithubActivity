@@ -27,12 +27,14 @@ public class GithubQuerier {
             JSONObject event = response.get(i);
             JSONObject payload = event.getJSONObject("payload");
             JSONArray root = payload.getJSONArray("commits");
+            if(root.isNull(0)) continue;
             JSONObject commit = root.getJSONObject(0);
 
             // Get SHA hash
             String SHA = commit.getString("sha");
             // Get commit message
             String message = commit.getString("message");
+
             // Get event type
             String type = event.getString("type");
             // Get created_at date, and format it in a more pleasant style

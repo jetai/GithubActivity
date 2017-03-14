@@ -2,7 +2,8 @@ version: '2'
 services:
   activity:
     image: activity
-
+  activity2:
+      image: activity2
   ng:
     ports:
      - "8888:8888"
