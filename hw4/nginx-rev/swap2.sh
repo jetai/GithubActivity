@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #/bin/bash
 # This shell is to swap from web1 to web2
 cd /etc/nginx

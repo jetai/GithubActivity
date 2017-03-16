@@ -1,0 +1,18 @@
+1) Initially I'm going to need to build the nginx proxy using
+    docker build -d -P ng .
+in the nginx-rev folder
+2) I'm going to bring the ng proxy up using
+    docker-compose up
+in the hw4 folder
+3) I'm going to build my new image activity2 using
+docker build -d -P activity2 .
+in the activity folder where the activity.war file is
+4)
+I have made a doswap.sh that can switch the old image out with a new image given that they have been built
+
+doswap.sh (one argument, the docker image, say DDDD, you want to run)
+    1) swap between the old image with another image given that it has been built
+    3) this will work regardless of the permission flag of swap.sh
+    2) the command would be ./doswap.sh [new]
+
+

@@ -15,9 +15,8 @@ MAINTAINER Prem Devanbu & Vincent Hellendoorn
 # RUN echo "deb http://archive.ubuntu.com/ubuntu/ raring main universe" >> /etc/apt/sources.list
 
 # Update the repository
-RUN apt-get update 
-    
-
+RUN apt-get update
+#RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 # Install necessary tools
 RUN apt-get install -y nano wget dialog net-tools curl
 
@@ -35,7 +34,7 @@ ADD nginx.conf /etc/nginx/
 ADD init.sh /bin/init.sh
 ADD swap1.sh /bin/swap1.sh
 ADD swap2.sh /bin/swap2.sh
-ADD swap3.sh /bin/swap3.sh
+#ADD swap3.sh /bin/swap3.sh
 
 # Append "daemon off;" to the beginning of the configuration
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
